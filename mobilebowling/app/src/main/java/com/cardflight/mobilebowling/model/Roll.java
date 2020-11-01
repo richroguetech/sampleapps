@@ -6,6 +6,8 @@ import java.util.Map;
 public class Roll {
     private int numPins = -1;
     private String rollValue = "";
+    public int frameNumber;
+    public int ballNumber;
 
     public enum RollType
     {
@@ -71,8 +73,10 @@ public class Roll {
 
         if (type == RollType.STRIKE) {
             setNumPins(10);
+            ballNumber = 1;
         } else if (type == RollType.SPARE) {
             setNumPins(10);
+            ballNumber = 2;
         } else if (type == RollType.GUTTER) {
             setNumPins(0);
         }

@@ -10,15 +10,21 @@ public class Frame {
     private int roll2 = -1;   // second roll
     private int roll3 = -1;   // 3rd roll - only applies to 10th frame...
 
+    private int bonus = 0;  // bonus for spare
+    private int bonus2 = 0;  //bonus for strike...
+
     private boolean isSpare = false;
     private boolean isStrike = false;
-    private boolean isFinished = false;
+    private boolean isFinished = false; // isFinished is false if strike or spare
+     // and bonus not calculated....
 
     private boolean isLastFrame = false;
 
     public Frame(Roll roll) {
         // process the frameNumber and 1st roll value....
-        //if (roll)
+        if (roll.getRollValue() == "X") {
+            setFirstRoll(roll);
+        }
     }
 
     public void updateSecondRoll(Roll roll) {
@@ -26,12 +32,43 @@ public class Frame {
         setSecondRoll(roll);
     }
 
-    public boolean isStrike() {
-        return isStrike;
+    public boolean isLastFrame() {
+        return isLastFrame;
+    }
+
+    public void setLastFrame() {
+        this.isLastFrame = true;
     }
 
     public boolean isSpare() {
         return isSpare;
+    }
+
+    public boolean isStrike() {
+        return isStrike;
+    }
+
+    public void setStrike(boolean isStrike) {
+        this.isStrike = isStrike;
+    }
+
+    public void setSpare(boolean isSpare) {
+        this.isSpare = isSpare;
+    }
+
+    public void setFrameScore(int score) {
+
+        this.frameScore = score;
+    }
+
+    public void setTotalFrameScore(int totalFrameScore) {
+
+        this.totalFrameScore = totalFrameScore;
+    }
+
+    // means scoring isn't finished...
+    public void setFinished(boolean isFinished) {
+        this.isFinished = isFinished;
     }
 
     public boolean isFinished() {

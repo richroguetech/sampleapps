@@ -11,14 +11,19 @@ public class Game {
     private int totalScore = 0;
 
     //Getters and Setters
-    public Frame[] getFrames() {
-        return userFrames;
+    public List<Frame> getFrames() {
+        return this.userFrames;
     }
-    public void setFrames(Frame[] frames) {
+
+    public void setFrames(ArrayList<Frame> userFrames) {
         this.userFrames = userFrames;
     }
+
     public int getTotalScore() {
-        return this.totalScore;
+        for (Frame frame : userFrames) {
+            totalScore += frame.getTotalFrameScore();
+        }
+        return totalScore;
     }
 
 }
