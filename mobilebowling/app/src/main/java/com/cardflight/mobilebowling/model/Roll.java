@@ -8,10 +8,13 @@ public class Roll {
     private String rollValue = "";
     public int frameNumber;
     public int ballNumber;
+    private RollType rollType;
+    public boolean isValid = false;
 
     public enum RollType
     {
-        STRIKE("X"), SPARE("/"), GUTTER("-");
+        STRIKE("X"), SPARE("/"), GUTTER("-"),
+        NUMERIC("N");
 
         private String rollValue;
 
@@ -27,7 +30,7 @@ public class Roll {
 
         public void setRollValue(String rollString)
         {
-            setRollValue(rollString);
+            this.rollValue = rollString;
         }
 
         private static final Map<String, RollType> lookup = new HashMap<>();
@@ -45,6 +48,16 @@ public class Roll {
         }
     }
 
+
+    public void setRollType(RollType type) {
+
+        this.rollType = type;
+    }
+
+    public RollType getRollType() {
+
+        return this.rollType;
+    }
 
     public void setRollValue(String rollValue) {
 
@@ -64,7 +77,6 @@ public class Roll {
         this.numPins = numPins;
     }
 
-
     // this class is used to sanitize the input...
     public Roll(String input) {
 
@@ -73,21 +85,25 @@ public class Roll {
 
         if (type == RollType.STRIKE) {
             setNumPins(10);
-            ballNumber = 1;
         } else if (type == RollType.SPARE) {
-            setNumPins(10);
-            ballNumber = 2;
+            setNumPins(10); // total pins is 10 - value is 10 - first ball..
         } else if (type == RollType.GUTTER) {
             setNumPins(0);
         }
         else {
             try {
                 int pins = Integer.parseInt(input);
-                setNumPins(pins);
+                if (pins >= 0 && pins <=9) {
+                    // valid roll type...
+                    setNumPins(pins);
+                    setRollType(RollType.NUMERIC);
+                }
             } catch(Exception ex) {
                 // double check exception
+                isValid = false;
             }
         }
+        isValid = true;
     }
 
 }

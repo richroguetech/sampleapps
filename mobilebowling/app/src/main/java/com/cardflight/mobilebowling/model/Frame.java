@@ -4,14 +4,17 @@ public class Frame {
 
     private int frameScore = 0;   // number of pins knocked down in frame
     private int totalScore = 0;   // total game score up to this point.
-    private int totalFrameScore = 0; // frameScore + 1 or 2 next balls.
 
     private int roll1 = -1;   // first roll
     private int roll2 = -1;   // second roll
     private int roll3 = -1;   // 3rd roll - only applies to 10th frame...
 
-    private int bonus = 0;  // bonus for spare
-    private int bonus2 = 0;  //bonus for strike...
+    private int bonus = 0;  // bonus for 1st ball (i.e. spare).
+    private int bonus2 = 0;  //bonus for 2nd ball (i.e. strike).
+    public boolean isBonusProcessed = false;
+    public boolean isBonus2Processed = false;
+
+    private int totalFrameScore = frameScore + bonus + bonus2; // frameScore + 1 or 2 next balls.
 
     private boolean isSpare = false;
     private boolean isStrike = false;
