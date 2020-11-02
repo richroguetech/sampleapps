@@ -6,7 +6,6 @@ import java.util.Map;
 public class Roll {
     private int numPins = -1;
     private String rollValue = "";
-    public int frameNumber;
     public int ballNumber;
     private RollType rollType;
     public boolean isValid = false;
@@ -49,12 +48,12 @@ public class Roll {
     }
 
 
-    public void setRollType(RollType type) {
+    public void setType(RollType type) {
 
         this.rollType = type;
     }
 
-    public RollType getRollType() {
+    public RollType getType() {
 
         return this.rollType;
     }
@@ -85,10 +84,13 @@ public class Roll {
 
         if (type == RollType.STRIKE) {
             setNumPins(10);
+            setType(RollType.STRIKE);
         } else if (type == RollType.SPARE) {
             setNumPins(10); // total pins is 10 - value is 10 - first ball..
+            setType(RollType.SPARE);
         } else if (type == RollType.GUTTER) {
             setNumPins(0);
+            setType(RollType.GUTTER);
         }
         else {
             try {
@@ -96,7 +98,10 @@ public class Roll {
                 if (pins >= 0 && pins <=9) {
                     // valid roll type...
                     setNumPins(pins);
-                    setRollType(RollType.NUMERIC);
+                    setType(RollType.NUMERIC);
+                } else {
+                    setNumPins(-1);
+                    isValid = false; // outside of range..
                 }
             } catch(Exception ex) {
                 // double check exception

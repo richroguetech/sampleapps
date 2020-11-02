@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class RollUnitTest {
     private Roll roll1;  // a strike
@@ -14,6 +15,7 @@ public class RollUnitTest {
     private Roll roll3; // gutter
     private Roll roll4;
 
+    private Roll invalidRoll1;
 
     @Before //This is executed before the @Test executes
     public void setUp(){
@@ -21,6 +23,7 @@ public class RollUnitTest {
         roll2 = new Roll("/");
         roll3 = new Roll("-");
         roll4 = new Roll("5");
+        invalidRoll1 = new Roll("11"); // outside of bounds
     }
 
     @Test
@@ -33,6 +36,14 @@ public class RollUnitTest {
 
         assertEquals(5, roll4.getNumPins());
         assertEquals(1, roll4.ballNumber);
+    }
+
+    @Test
+    public void testInvalidRolls() {
+        int numPins = invalidRoll1.getNumPins();
+        String rollValue = invalidRoll1.getRollValue();
+        assertEquals(-1, invalidRoll1.getNumPins());
+        assertNull(invalidRoll1.getType());
     }
 
 

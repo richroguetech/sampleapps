@@ -28,9 +28,30 @@ public class FrameUnitTest {
     @Test
     public void testFrameStrike() {
         int numPins = roll1.getNumPins();
-        frame = new Frame(roll1);
-        assertEquals(10, frame.getFirstRoll());
+        frame = new Frame(1, roll1);
+        assertEquals(10, frame.getFirstRoll().getNumPins());
         assertEquals(true, frame.isStrike());
+        assertEquals(10, frame.getTotalFrameScore());
+        assertEquals(false, frame.isFinished());
+    }
+
+    @Test
+    public void testFrameStrikeWithBonusBall() {
+        int numPins = roll1.getNumPins();
+        frame = new Frame(1, roll1);
+        frame.processBonus(5);
+        frame.processBonus2(10);
+        assertEquals(10, frame.getFirstRoll().getNumPins());
+        assertEquals(true, frame.isStrike());
+        assertEquals(25, frame.getTotalFrameScore());
+        assertEquals(true, frame.isFinished());
+    }
+
+    @Test
+    public void testFrameStrikeCantHaveAdditionalBalls() {
+        int numPins = roll1.getNumPins();
+        frame = new Frame(1, roll1);
+        frame.insertSecondRoll(roll2);
         assertEquals(10, frame.getTotalFrameScore());
         assertEquals(false, frame.isFinished());
     }
