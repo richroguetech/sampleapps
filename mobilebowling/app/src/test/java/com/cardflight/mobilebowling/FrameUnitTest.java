@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class FrameUnitTest {
     private Roll roll1;  // a strike
@@ -52,14 +53,24 @@ public class FrameUnitTest {
         int numPins = roll1.getNumPins();
         frame = new Frame(1, roll1);
         frame.insertSecondRoll(roll2);
+        assertNull(frame.getSecondRoll());
         assertEquals(10, frame.getTotalFrameScore());
         assertEquals(false, frame.isFinished());
     }
 
+    @Test
+    public void testProcessFrameNoStrike() {
+        Roll roll1 = new Roll("6");
+        Roll roll2 = new Roll("3");
+        frame = new Frame(1, roll1);
+        frame.insertSecondRoll(roll2);
+        assertEquals(9, frame.getTotalFrameScore());
+        assertEquals(true, frame.isFinished());
+    }
 
     @After //This is executed after the @Test executes
     public void tearDown(){
-        System.out.println("Done with testing");
+        //
     }
 
 }

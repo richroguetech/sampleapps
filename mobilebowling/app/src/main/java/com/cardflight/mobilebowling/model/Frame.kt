@@ -2,11 +2,9 @@ package com.cardflight.mobilebowling.model
 
 class Frame(frameNumber: Int, roll: Roll) {
     var frameScore = 0 // number of pins knocked down in frame roll1 + roll2
-    val totalScore = 0 // total game score up to this point.
     var firstRoll: Roll? = null // first roll
     var secondRoll: Roll? = null // second roll
     var thirdRoll: Roll? = null // 3rd roll - only applies to 10th frame...
-        private set
     private var bonus = 0 // bonus for 1st ball (i.e. spare).
     private var bonus2 = 0 //bonus for 2nd ball (i.e. strike).
     var isBonusProcessed = false
@@ -22,22 +20,6 @@ class Frame(frameNumber: Int, roll: Roll) {
     // process all 3 balls....
     // frameScore + 1 or 2 next balls.
     var totalFrameScore = -1 // frameScore + 1 or 2 next balls.
-        get() {
-            field = if (isLastFrame) {
-                // process all 3 balls....
-                frameScore + thirdRoll!!.numPins
-            } else {
-                if (isStrike) {
-                    frameScore + bonus + bonus2
-                } else if (isSpare) {
-                    frameScore + bonus
-                } else {
-                    frameScore
-                }
-            }
-
-            return field // frameScore + 1 or 2 next balls.
-        }
     var isSpare = false
     var isStrike = false
 
@@ -54,13 +36,14 @@ class Frame(frameNumber: Int, roll: Roll) {
         if (isSpare) {
             isFinished = true
         }
+        totalFrameScore = frameScore + bonus
         isBonusProcessed = true
     }
 
-    fun processBonus2(bonus: Int) {
-        bonus2 = bonus
+    fun processBonus2(bonus2: Int) {
         if (isStrike) {
             isFinished = true
+            totalFrameScore = frameScore + bonus + bonus2
             isBonus2Processed = true
         }
     }
@@ -85,18 +68,24 @@ class Frame(frameNumber: Int, roll: Roll) {
             if (roll.type == Roll.RollType.STRIKE) {
                 isStrike = true
                 frameScore = 10
+            } else {
+                frameScore = roll.numPins
             }
             this.firstRoll = roll
+            totalFrameScore = frameScore
         }
     }
 
     fun insertSecondRoll(roll2: Roll) {
-        if (roll2.isValid) {
+        if (roll2.isValid && firstRoll?.type != Roll.RollType.STRIKE) {
             if (roll2.type == Roll.RollType.SPARE) {
                 isSpare = true
+                frameScore = 10
             } else {
+                frameScore += roll2.numPins
                 isFinished = true
             }
+            totalFrameScore = frameScore
             secondRoll = roll2
         }
     }
@@ -104,6 +93,7 @@ class Frame(frameNumber: Int, roll: Roll) {
     fun insertThirdRoll(roll3: Roll) {
         if (roll3.isValid && frameNumber == LAST_FRAME_NUMBER) {
             thirdRoll = roll3
+            totalFrameScore = frameScore + thirdRoll!!.numPins
         }
     }
 

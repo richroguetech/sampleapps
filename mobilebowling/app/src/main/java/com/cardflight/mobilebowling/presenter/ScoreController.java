@@ -6,7 +6,6 @@ import com.cardflight.mobilebowling.model.Roll;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class ScoreController {
 
@@ -17,31 +16,29 @@ public class ScoreController {
     public static final int NUMBER_OF_FRAMES = 10;
     public static List<Frame> userFrames = new ArrayList<>();
 
-    public static int frameCounter = 0;  // initialized to first frame.
     public static int TEN_PINS = 10;
-
-    public boolean addFrame(Roll roll) {
-        return false;
-    }
+    public static int totalScore = 0;
 
     //startGame method starts
     public void processRoll(int frameNumber, Roll roll, boolean overwrite) {
 
-        Frame frame = userFrames.get(frameNumber -1);
+        Frame frame = userFrames.size() >= frameNumber ? userFrames.get(frameNumber -1) : null;
         if (overwrite == true) {
             frame = null; // need to process the scores all over again....
         }
+
         if (frame == null) {
             frame = new Frame(frameNumber, roll);
             if (frame.getFirstRoll().getType() == Roll.RollType.STRIKE) {
                 frame.setStrike(true);
             }
+            userFrames.add(frameNumber -1, frame);
         } else {
           if (frameNumber == NUMBER_OF_FRAMES -1) {
               // this is last Frame....
               // check and see if this first roll or second roll or third roll
               if (frame.getFirstRoll() == null) {
-                  frame.setFirstRoll(roll);
+                  frame.insertFirstRoll(roll);
               } else if (frame.getSecondRoll() == null) {
                   frame.insertSecondRoll(roll);
               } else if (frame.getThirdRoll() == null) {
@@ -49,7 +46,7 @@ public class ScoreController {
               }
           } else {
               // process the second rolll
-              frame.setSecondRoll(roll);
+              frame.insertSecondRoll(roll);
               // check for spare...
               if (frame.getSecondRoll().getType() == Roll.RollType.SPARE) {
                   frame.setSpare(true); // update num pins from the first roll..
@@ -57,11 +54,13 @@ public class ScoreController {
                   frame.getSecondRoll().setNumPins(10 - numFirstPins);
               }
           }
-          update(frameNumber, roll); // to process the bonus... scores...
+            userFrames.remove(frameNumber -1);
+            userFrames.add(frameNumber -1, frame);
         }
+        update(frameNumber -1, roll); // to process the bonus... scores...
         // update the total score...
-        System.out.println(getCumulativeScore(frameNumber));
-        userFrames.set(frameNumber, frame);
+        totalScore = getCumulativeScore(frameNumber);
+        System.out.println(totalScore);
     }
 
     public static void getScores(int i) {
@@ -103,14 +102,9 @@ public class ScoreController {
     public int getCumulativeScore(int frameNumber)
     {
         int sum = 0;
-        for(int j=0;j <= frameNumber; j++ )
+        for(int j=0;j < frameNumber; j++ )
         {
-            if(!userFrames.get(frameNumber).isFinished()) {
-                sum = sum + userFrames.get(frameNumber).getFrameScore();
-                // the cumulative score at this point is the total pins knocked down w/o bonus calculation.
-            } else {
-                sum = sum + userFrames.get(frameNumber).getTotalFrameScore();
-            }
+            sum = sum + userFrames.get(j).getTotalFrameScore();
         }
         return sum;
     }
@@ -119,15 +113,14 @@ public class ScoreController {
     {
         for(int i= j-1; i >= 0; i--) // if i = 0, first frame...
         {
-            if ((userFrames.get(i).isStrike()) && (!userFrames.get(i).isFinished()))
+            if ((userFrames.get(i).isStrike()) && (!userFrames.get(i).isBonusProcessed()))
             {
-                userFrames.get(i).setFrameScore(TEN_PINS);
-                userFrames.get(i).getFirstRoll().getNumPins();
                 // process bonus
                 userFrames.get(i).processBonus(roll.getNumPins());
                 continue;
             }
-            if ((userFrames.get(i).isStrike()) && (userFrames.get(i).isBonusProcessed()))
+            if ((userFrames.get(i).isStrike()) && (userFrames.get(i).isBonusProcessed() &&
+                    !userFrames.get(i).isBonus2Processed()))
             {
                 userFrames.get(i).processBonus2(roll.getNumPins());
                 continue;
@@ -137,7 +130,6 @@ public class ScoreController {
             {
                 userFrames.get(i).processBonus(roll.getNumPins());
                 userFrames.get(i).setTotalFrameScore(userFrames.get(i).getTotalFrameScore());
-                continue;
             }
         }
     }
