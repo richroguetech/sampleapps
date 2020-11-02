@@ -6,6 +6,7 @@ import com.cardflight.mobilebowling.model.Roll;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ScoreController {
 
@@ -34,7 +35,7 @@ public class ScoreController {
             }
             userFrames.add(frameNumber -1, frame);
         } else {
-          if (frameNumber == NUMBER_OF_FRAMES -1) {
+          if (frameNumber == NUMBER_OF_FRAMES) {
               // this is last Frame....
               // check and see if this first roll or second roll or third roll
               if (frame.getFirstRoll() == null) {
@@ -60,42 +61,39 @@ public class ScoreController {
         update(frameNumber -1, roll); // to process the bonus... scores...
         // update the total score...
         totalScore = getCumulativeScore(frameNumber);
-        System.out.println(totalScore);
     }
 
-    public static void getScores(int i) {
-        //printing starts
-        System.out.println("SCORES - ");
-        for(int j=0;j<=i;j++)
+    public static void getScores(int frameNumber) {
+        for(int j = frameNumber -1; j < frameNumber; j++)
         {
-            //Normal case (Neither STRIKE nor SPARE)
-            if((userFrames.get(i).isStrike()==false)&& (userFrames.get(i).isSpare()==false))
+            if((!userFrames.get(j).isStrike()) && (!userFrames.get(j).isSpare()))
             {
-                //System.out.println("The Individual score for "+(j+1)+" Frame is :"+this.getGame().getFrames()[j].getAbsolute_score_of_frame());
-                System.out.println("The Individual score for "+(j+1)+" Frame is :"+userFrames.get(i).getTotalFrameScore());
+                int firstroll = userFrames.get(j).getFirstRoll().getNumPins();
+                int secondroll = 0;
+                //int secondroll = userFrames.get(j).getSecondRoll().getNumPins();
+                System.out.println("Frame #" + frameNumber + ":" + firstroll + secondroll +  " ");
             }
-            //STRIKE not calculated yet
-            if((userFrames.get(i).isStrike()) && (userFrames.get(i).getTotalFrameScore()==-99))
+            if((userFrames.get(j).isStrike()) && (!userFrames.get(j).isFinished()))
             {
-                System.out.println("The Individual score for "+(j+1)+" Frame is : X");
+                System.out.println(userFrames.get(j).getFirstRoll().getType());
             }
-            //STRIKE Calculated
-            if((userFrames.get(i).isStrike())&&(userFrames.get(i).getTotalFrameScore()!=-99))
+            if((userFrames.get(j).isStrike()) && (userFrames.get(j).isFinished()))
             {
-                System.out.println("The Individual score for "+(j+1)+" Frame is : "+userFrames.get(i).getTotalFrameScore());
+                int firstroll = userFrames.get(j).getFirstRoll().getNumPins();
+                System.out.println("Frame #" + frameNumber + ":" + firstroll + " ");
             }
-            //SPARE not calculated yet
-            if((userFrames.get(i).isSpare()) && (userFrames.get(i).getTotalFrameScore()==-88))
+            if((userFrames.get(j).isSpare()) && (!userFrames.get(j).isFinished()))
             {
-                System.out.println("The Individual score for "+(j+1)+" Frame is : /");
+                int firstroll = userFrames.get(j).getFirstRoll().getNumPins();
+                String secondroll = userFrames.get(j).getSecondRoll().getType().toString();
+                System.out.println("Frame #" + frameNumber + ":" + firstroll + " " + secondroll + "");
             }
-            //SPARE Calculated
-            if((userFrames.get(i).isSpare()) && (userFrames.get(i).getTotalFrameScore()!=-88))
+            if((userFrames.get(j).isSpare()) && (!userFrames.get(j).isFinished()))
             {
-                System.out.println("The Individual score for "+(j+1)+" Frame is : "+userFrames.get(i).getTotalFrameScore());
+                int firstroll = userFrames.get(j).getFirstRoll().getNumPins();
+                String secondroll = userFrames.get(j).getSecondRoll().getType().toString();
+                System.out.println("Frame #" + frameNumber + ":" + firstroll + " " + secondroll + "");
             }
-
-            //System.out.println("and the Cumulative score for Frame "+(j+1)+" is :"+getCumulativeScore(j));
         }
     }
 

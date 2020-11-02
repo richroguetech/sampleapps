@@ -77,16 +77,33 @@ class Frame(frameNumber: Int, roll: Roll) {
     }
 
     fun insertSecondRoll(roll2: Roll) {
-        if (roll2.isValid && firstRoll?.type != Roll.RollType.STRIKE) {
-            if (roll2.type == Roll.RollType.SPARE) {
-                isSpare = true
-                frameScore = 10
-            } else {
-                frameScore += roll2.numPins
-                isFinished = true
+        if (frameNumber != LAST_FRAME_NUMBER) {
+            if (roll2.isValid && firstRoll?.type != Roll.RollType.STRIKE) {
+                if (roll2.type == Roll.RollType.SPARE) {
+                    isSpare = true
+                    frameScore = 10
+                } else {
+                    frameScore += roll2.numPins
+                    isFinished = true
+                }
+                totalFrameScore = frameScore
+                secondRoll = roll2
             }
-            totalFrameScore = frameScore
-            secondRoll = roll2
+        } else {
+            if (roll2.isValid) {
+                if (roll2.type == Roll.RollType.SPARE) {
+                    isSpare = true
+                    frameScore = 10
+                } else if (roll2.type == Roll.RollType.STRIKE) {
+                    isStrike = true
+                    frameScore += 10
+                } else {
+                    frameScore += roll2.numPins
+                    isFinished = true
+                }
+                totalFrameScore = frameScore
+                secondRoll = roll2
+            }
         }
     }
 
@@ -98,7 +115,7 @@ class Frame(frameNumber: Int, roll: Roll) {
     }
 
     companion object {
-        var LAST_FRAME_NUMBER = 9 // 0 base index.
+        var LAST_FRAME_NUMBER = 10
     }
 
     init {
