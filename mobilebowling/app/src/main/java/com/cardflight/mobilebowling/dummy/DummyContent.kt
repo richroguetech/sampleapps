@@ -11,6 +11,7 @@ import java.util.HashMap
  */
 object DummyContent {
 
+    dedd
     /**
      * An array of sample (dummy) items.
      */
@@ -21,7 +22,7 @@ object DummyContent {
      */
     val ITEM_MAP: MutableMap<String, DummyItem> = HashMap()
 
-    private val COUNT = 25
+    private val COUNT = 10
 
     init {
         // Add some sample items.

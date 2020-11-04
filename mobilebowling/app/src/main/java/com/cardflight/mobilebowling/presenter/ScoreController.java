@@ -6,21 +6,18 @@ import com.cardflight.mobilebowling.model.Roll;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ScoreController {
 
     //Declaring Class Variable
     private Game game=new Game ();
 
-    // constants
     public static final int NUMBER_OF_FRAMES = 10;
     public static List<Frame> userFrames = new ArrayList<>();
 
     public static int TEN_PINS = 10;
     public static int totalScore = 0;
 
-    //startGame method starts
     public void processRoll(int frameNumber, Roll roll, boolean overwrite) {
 
         Frame frame = userFrames.size() >= frameNumber ? userFrames.get(frameNumber -1) : null;
@@ -107,7 +104,7 @@ public class ScoreController {
         return sum;
     }
 
-    public void update(int j, Roll roll)  //Update the score of previous frames as per the score of current frame in case of SPARE/STRIKE
+    public void update(int j, Roll roll)  //Update the score of previous frames as in case of SPARE/STRIKE
     {
         for(int i= j-1; i >= 0; i--) // if i = 0, first frame...
         {
