@@ -3,20 +3,41 @@ package com.cardflight.mobilebowling.presenter;
 import com.cardflight.mobilebowling.model.Frame;
 import com.cardflight.mobilebowling.model.Game;
 import com.cardflight.mobilebowling.model.Roll;
+import com.cardflight.mobilebowling.view.ScorePresenterView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScoreController {
+public class ScorePresenterImpl implements ScorePresenter, ScorePresenterView {
 
     //Declaring Class Variable
-    private Game game=new Game ();
+    private Game game;
 
     public static final int NUMBER_OF_FRAMES = 10;
     public static List<Frame> userFrames = new ArrayList<>();
 
     public static int TEN_PINS = 10;
     public static int totalScore = 0;
+
+    @Override
+    public void initialize() {
+        game = new Game();
+
+    }
+
+    @Override
+    public void startPresenting() {
+
+    }
+
+    @Override
+    public void stopPresenting() {
+
+    }
+
+    public void resetGame() {
+        userFrames.clear();
+    }
 
     public void processRoll(int frameNumber, Roll roll, boolean overwrite) {
 
@@ -60,7 +81,7 @@ public class ScoreController {
         totalScore = getCumulativeScore(frameNumber);
     }
 
-    public static void getScores(int frameNumber) {
+    public void getScores(int frameNumber) {
         for(int j = frameNumber -1; j < frameNumber; j++)
         {
             if((!userFrames.get(j).isStrike()) && (!userFrames.get(j).isSpare()))
@@ -139,4 +160,13 @@ public class ScoreController {
         this.game = game;
     }
 
+    @Override
+    public void setFrameListener() {
+
+    }
+
+    @Override
+    public void showErrorView() {
+
+    }
 }

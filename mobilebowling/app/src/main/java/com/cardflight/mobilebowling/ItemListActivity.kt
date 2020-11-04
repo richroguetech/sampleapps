@@ -12,17 +12,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.cardflight.mobilebowling.presenter.ScorePresenter
+import com.cardflight.mobilebowling.presenter.ScorePresenterImpl
 
-import com.cardflight.mobilebowling.dummy.DummyContent
+import com.cardflight.mobilebowling.view.FrameView
 
-/**
- * An activity representing a list of Pings. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a [ItemDetailActivity] representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
+
 class ItemListActivity : AppCompatActivity() {
 
     /**
@@ -30,10 +25,20 @@ class ItemListActivity : AppCompatActivity() {
      * device.
      */
     private var twoPane: Boolean = false
+    private var presenter: ScorePresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_list)
+        presenter = ScorePresenterImpl()
+        initialize()
+    }
+
+    private fun setupRecyclerView(recyclerView: RecyclerView) {
+        recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, FrameView.ITEMS, twoPane)
+    }
+
+    fun initialize() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -41,7 +46,7 @@ class ItemListActivity : AppCompatActivity() {
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+                .setAction("Action", null).show()
         }
 
         if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {
@@ -53,14 +58,11 @@ class ItemListActivity : AppCompatActivity() {
         }
 
         setupRecyclerView(findViewById(R.id.item_list))
-    }
-
-    private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, twoPane)
+        presenter?.initialize()
     }
 
     class SimpleItemRecyclerViewAdapter(private val parentActivity: ItemListActivity,
-                                        private val values: List<DummyContent.DummyItem>,
+                                        private val values: List<FrameView.FrameViewItem>,
                                         private val twoPane: Boolean) :
             RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
 
@@ -68,7 +70,7 @@ class ItemListActivity : AppCompatActivity() {
 
         init {
             onClickListener = View.OnClickListener { v ->
-                val item = v.tag as DummyContent.DummyItem
+                val item = v.tag as FrameView.FrameViewItem
                 if (twoPane) {
                     val fragment = ItemDetailFragment().apply {
                         arguments = Bundle().apply {
