@@ -5,6 +5,7 @@ import com.cardflight.mobilebowling.model.Game;
 import com.cardflight.mobilebowling.model.Roll;
 import com.cardflight.mobilebowling.view.ScorePresenterView;
 
+import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class ScorePresenterImpl implements ScorePresenter, ScorePresenterView {
 
     //Declaring Class Variable
     private Game game;
+    private Context mContext;
 
     public static final int NUMBER_OF_FRAMES = 10;
     public static List<Frame> userFrames = new ArrayList<>();
@@ -22,7 +24,6 @@ public class ScorePresenterImpl implements ScorePresenter, ScorePresenterView {
     @Override
     public void initialize() {
         game = new Game();
-
     }
 
     @Override

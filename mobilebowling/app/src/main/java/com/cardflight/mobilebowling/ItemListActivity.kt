@@ -7,16 +7,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.cardflight.mobilebowling.presenter.ScorePresenter
 import com.cardflight.mobilebowling.presenter.ScorePresenterImpl
 
 import com.cardflight.mobilebowling.view.FrameView
+import com.cardflight.mobilebowling.view.SharedViewModel
 import com.example.dialogfragment_example.FrameEditorFragment
+import com.google.android.material.snackbar.Snackbar
 
 
 class ItemListActivity : AppCompatActivity() {
@@ -33,11 +37,31 @@ class ItemListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_item_list)
         presenter = ScorePresenterImpl()
         initialize()
+        registerListeners()
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
         recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, FrameView.ITEMS, twoPane)
     }
+
+    fun registerListeners() {
+
+        var sharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
+        sharedViewModel.roll1.observe(this, Observer {
+            //presenter?.processRoll(fr)
+        })
+
+        sharedViewModel.roll2.observe(this, Observer {
+            Toast.makeText(this.applicationContext, it, Toast.LENGTH_LONG)
+                .show()
+        })
+
+        sharedViewModel.roll3.observe(this, Observer {
+            Toast.makeText(this.applicationContext, it, Toast.LENGTH_LONG)
+                .show()
+        })
+    }
+
 
     fun initialize() {
 

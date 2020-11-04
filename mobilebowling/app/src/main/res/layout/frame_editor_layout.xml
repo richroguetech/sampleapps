@@ -6,7 +6,7 @@
     android:padding="@dimen/dimen_12">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/textView"
+        android:id="@+id/textFrameTitle"
         android:layout_width="@dimen/wrap_constraints"
         android:layout_height="wrap_content"
         android:text="@string/framed_editor_msg"
@@ -15,6 +15,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/framelabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="Select Frame:"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFrameTitle" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/frame_number"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/framelabel"/>
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/roll1score"
@@ -25,7 +47,7 @@
         android:textSize="@dimen/font_size_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/frame_number" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/roll2score"
@@ -36,7 +58,18 @@
         android:textSize="@dimen/font_size_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/roll1score" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/roll3score"
+        android:layout_width="@dimen/wrap_constraints"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_12"
+        android:hint="@string/msg_hint_roll"
+        android:textSize="@dimen/font_size_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roll2score" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSubmit"
@@ -46,6 +79,6 @@
         android:text="@string/label_submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/roll2score" />
+        app:layout_constraintTop_toBottomOf="@+id/roll3score" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
