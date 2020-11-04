@@ -16,6 +16,7 @@ import com.cardflight.mobilebowling.presenter.ScorePresenter
 import com.cardflight.mobilebowling.presenter.ScorePresenterImpl
 
 import com.cardflight.mobilebowling.view.FrameView
+import com.example.dialogfragment_example.FrameEditorFragment
 
 
 class ItemListActivity : AppCompatActivity() {
@@ -45,8 +46,7 @@ class ItemListActivity : AppCompatActivity() {
         toolbar.title = title
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            FrameEditorFragment().show(supportFragmentManager, FrameEditorFragment.TAG)
         }
 
         if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {

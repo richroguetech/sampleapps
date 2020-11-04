@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">CardFlight</string>
     <string name="title_item_detail">Item Detail</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_ok">Ok</string>
+    <string name="framed_editor_msg">Please Enter Frame Details</string>
+    <string name="msg_hint_roll">Enter Roll Score</string>
+    <string name="label_submit">Submit</string>
 </resources>
